@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Физический прогресс</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand-mark">ФП</div>
+          <div class="brand-text">
+            <h1>Физический прогресс</h1>
+            <p>УрТИСИ · СибГУТИ</p>
+          </div>
+        </div>
+
+        <div class="nav-group-label">Рабочая область</div>
+        <nav class="nav" aria-label="Навигация по разделам">
+          <button class="nav-item active" data-target="overview" type="button">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.75h4.5V20H4zm6.75-8h4.5v15.25h-4.5zm6.75 4.5H20V20h-2.5z"/></svg>
+            </span>
+            <span>Обзор</span>
+          </button>
+          <button class="nav-item" data-target="students" type="button">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm8 1a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm-8 1.5c-2.9 0-5 1.7-5 4v1.5h10v-1.5c0-2.3-2.1-4-5-4zm8 0c1.6 0 3.2.5 4.3 1.5l.7 1V18h-5.5v-1.5c0-1.9-1.1-3.5-3.5-4.5 1.2-.7 2.7-1 4-1z"/></svg>
+            </span>
+            <span>Студенты</span>
+          </button>
+          <button class="nav-item" data-target="results" type="button">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5h12a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 18 19.5H6A1.5 1.5 0 0 1 4.5 18V6A1.5 1.5 0 0 1 6 4.5zm1.5 3h9v1.5h-9zm0 3h9v1.5h-9zm0 3h6v1.5h-6z"/></svg>
+            </span>
+            <span>Результаты</span>
+          </button>
+          <button class="nav-item" data-target="tables" type="button">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.25A1.75 1.75 0 0 1 6.25 3.5h11.5a1.75 1.75 0 0 1 1.75 1.75v13.5a1.75 1.75 0 0 1-1.75 1.75H6.25A1.75 1.75 0 0 1 4.5 18.75zm2.25-.75v3.5h11v-3.5zm11 5.5h-11v7h11zm-8 1.75h1.5v3.5h-1.5zm3.5 0h1.5v3.5h-1.5zm3.5 0h1.5v3.5h-1.5z"/></svg>
+            </span>
+            <span>Таблицы</span>
+          </button>
+          <button class="nav-item" data-target="gto" type="button">
+            <span class="nav-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-2.5 0-4.5 2-4.5 4.5 0 3.2 4.5 8.3 4.5 8.3s4.5-5.1 4.5-8.3c0-2.5-2-4.5-4.5-4.5zm0 6.2A2.2 2.2 0 1 1 12 5.3a2.2 2.2 0 0 1 0 4.4zm-5.5 7.5h11v2h-11z"/></svg>
+            </span>
+            <span>ГТО</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p>Данные хранятся локально в браузере. Для переноса используйте Excel.</p>
+          <div class="profile-mini">
+            <div class="avatar">П</div>
+            <div>
+              <strong>Преподаватель</strong>
+              <span>Кафедра физкультуры</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <span>Главная</span>
+            <span class="crumb-separator">/</span>
+            <span id="pageName">Обзор</span>
+          </div>
+          <div class="topbar-status">
+            <span class="status-dot"></span>
+            <span>Данные на устройстве</span>
+          </div>
+          <div class="group-tag">
+            <span class="group-tag-icon">G</span>
+            <span>Группа ФП-1</span>
+          </div>
+        </header>
+
+        <div class="content-panel">
+          <section id="overview" class="panel active">
+            <div class="page-header">
+              <div>
+                <p class="eyebrow">Сводка</p>
+                <h2>Обзор группы</h2>
+              </div>
+            </div>
+
+            <div id="overviewCards" class="stats-grid"></div>
+
+            <div class="column-grid two-col">
+              <div class="card">
+                <div class="card-head">
+                  <h3>Последние изменения</h3>
+                </div>
+                <ul id="recentResultsList" class="list-info"></ul>
+              </div>
+
+              <div class="card">
+                <div class="card-head">
+                  <h3>Состояние учета</h3>
+                </div>
+                <div id="overviewSummary" class="summary-box"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="students" class="panel hidden">
+            <div class="page-header">
+              <div>
+                <p class="eyebrow">Реестр</p>
+                <h2>Студенты</h2>
+              </div>
+              <button id="addStudentBtn" class="primary-btn" type="button">Добавить студента</button>
+            </div>
+
+            <div class="control-row compact">
+              <label class="field search-field">
+                <span class="field-label">Поиск</span>
+                <input id="studentSearch" type="search" placeholder="Имя или группа" />
+              </label>
+              <label class="field select-field">
+                <span class="field-label">Группа</span>
+                <select id="studentGroupFilter">
+                  <option value="all">Все группы</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="card">
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Студент</th>
+                      <th>Группа</th>
+                      <th>Курс</th>
+                      <th>Записи</th>
+                      <th>Последний результат</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="studentFormCard" class="card form-card hidden">
+              <div class="card-head split-head">
+                <h3 id="studentFormTitle">Добавить студента</h3>
+                <button id="closeStudentForm" class="ghost-btn" type="button">Закрыть</button>
+              </div>
+
+              <form id="studentForm" class="form-grid">
+                <input type="hidden" id="studentId" />
+                <label class="field">
+                  <span class="field-label">ФИО</span>
+                  <input id="studentName" name="name" type="text" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Группа</span>
+                  <input id="studentGroup" name="group" type="text" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Курс</span>
+                  <input id="studentCourse" name="course" type="number" min="1" max="6" required />
+                </label>
+                <label class="field full-width">
+                  <span class="field-label">Примечание</span>
+                  <input id="studentNote" name="note" type="text" placeholder="Например: допускается к практическим занятиям" />
+                </label>
+                <div class="form-actions full-width">
+                  <button type="submit" class="primary-btn">Сохранить</button>
+                  <button type="reset" class="ghost-btn">Очистить</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section id="results" class="panel hidden">
+            <div class="page-header">
+              <div>
+                <p class="eyebrow">История</p>
+                <h2>Результаты</h2>
+              </div>
+              <button id="addResultBtn" class="primary-btn" type="button">Добавить запись</button>
+            </div>
+
+            <div class="card">
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Студент</th>
+                      <th>Тест</th>
+                      <th>Дата</th>
+                      <th>Значение</th>
+                      <th>Ед. изм.</th>
+                      <th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resultsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="resultFormCard" class="card form-card hidden">
+              <div class="card-head split-head">
+                <h3 id="resultFormTitle">Добавить результат</h3>
+                <button id="closeResultForm" class="ghost-btn" type="button">Закрыть</button>
+              </div>
+
+              <form id="resultForm" class="form-grid">
+                <input type="hidden" id="resultId" />
+                <label class="field">
+                  <span class="field-label">Студент</span>
+                  <select id="resultStudent" required></select>
+                </label>
+                <label class="field">
+                  <span class="field-label">Тест</span>
+                  <input id="resultTest" type="text" required placeholder="Например: Бег 100 м" />
+                </label>
+                <label class="field">
+                  <span class="field-label">Дата</span>
+                  <input id="resultDate" type="date" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Значение</span>
+                  <input id="resultValue" type="number" step="0.1" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Ед. измерения</span>
+                  <input id="resultUnit" type="text" value="с" required />
+                </label>
+                <div class="form-actions full-width">
+                  <button type="submit" class="primary-btn">Сохранить</button>
+                  <button type="reset" class="ghost-btn">Очистить</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <section id="tables" class="panel hidden">
+            <div class="page-header">
+              <div>
+                <p class="eyebrow">Ведомости</p>
+                <h2>Таблицы</h2>
+              </div>
+              <div class="button-group">
+                <button id="newTableBtn" class="primary-btn" type="button">Новая таблица</button>
+                <button id="importExcelBtn" class="ghost-btn" type="button">Импорт Excel</button>
+                <button id="exportExcelBtn" class="ghost-btn" type="button">Экспорт Excel</button>
+              </div>
+            </div>
+
+            <div class="empty-state hidden" id="tablesEmptyState">
+              <p>Пустое состояние. Создайте ведомость или загрузите файл Excel для начала работы.</p>
+            </div>
+
+            <div class="column-grid two-col">
+              <div class="card">
+                <div class="card-head">
+                  <h3>Список ведомостей</h3>
+                </div>
+                <div id="tablesList" class="tables-list"></div>
+              </div>
+
+              <div class="card">
+                <div id="tableEditorContainer"></div>
+              </div>
+            </div>
+
+            <div id="tableFormCard" class="card form-card hidden">
+              <div class="card-head split-head">
+                <h3>Создать ведомость</h3>
+                <button id="closeTableForm" class="ghost-btn" type="button">Закрыть</button>
+              </div>
+
+              <form id="tableForm" class="form-grid">
+                <label class="field">
+                  <span class="field-label">Название</span>
+                  <input id="tableName" type="text" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Категория</span>
+                  <select id="tableCategory">
+                    <option value="Посещаемость">Посещаемость</option>
+                    <option value="Нормативы">Нормативы</option>
+                    <option value="Оценки">Оценки</option>
+                    <option value="Произвольная">Произвольная</option>
+                  </select>
+                </label>
+                <div class="form-actions full-width">
+                  <button type="submit" class="primary-btn">Создать</button>
+                </div>
+              </form>
+            </div>
+
+            <input id="excelFileInput" type="file" accept=".xlsx,.xls,.csv" class="hidden" />
+          </section>
+
+          <section id="gto" class="panel hidden">
+            <div class="page-header">
+              <div>
+                <p class="eyebrow">Нормативы</p>
+                <h2>ГТО</h2>
+              </div>
+              <button id="addGtoBtn" class="primary-btn" type="button">Добавить результат</button>
+            </div>
+
+            <div class="card">
+              <div class="gto-toolbar">
+                <label class="field">
+                  <span class="field-label">Возрастная ступень</span>
+                  <select id="gtoAgeStep">
+                    <option value="1">Ступень 1: 6–8 лет</option>
+                    <option value="2">Ступень 2: 9–10 лет</option>
+                    <option value="3">Ступень 3: 11–12 лет</option>
+                    <option value="4">Ступень 4: 13–15 лет</option>
+                    <option value="5">Ступень 5: 16–17 лет</option>
+                    <option value="6" selected>Ступень 6: 18–29 лет</option>
+                    <option value="7">Ступень 7: 30–39 лет</option>
+                    <option value="8">Ступень 8: 40–49 лет</option>
+                    <option value="9">Ступень 9: 50–59 лет</option>
+                    <option value="10">Ступень 10: 60+ лет</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span class="field-label">Пол</span>
+                  <select id="gtoGender">
+                    <option value="женский">Женский</option>
+                    <option value="мужской" selected>Мужской</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="column-grid two-col">
+              <div class="card">
+                <div class="card-head">
+                  <h3>Показатели по упражнениям</h3>
+                </div>
+                <div id="gtoList" class="gto-list"></div>
+              </div>
+
+              <div class="card">
+                <div class="card-head">
+                  <h3>Сводка по студенту</h3>
+                </div>
+                <div id="gtoSummary" class="summary-box"></div>
+              </div>
+            </div>
+
+            <div id="gtoFormCard" class="card form-card hidden">
+              <div class="card-head split-head">
+                <h3>Внести результат ГТО</h3>
+                <button id="closeGtoForm" class="ghost-btn" type="button">Закрыть</button>
+              </div>
+
+              <form id="gtoForm" class="form-grid">
+                <label class="field">
+                  <span class="field-label">Студент</span>
+                  <select id="gtoStudentSelect" required></select>
+                </label>
+                <label class="field">
+                  <span class="field-label">Испытание</span>
+                  <input id="gtoExercise" type="text" placeholder="Например: бег 100 м" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Дата</span>
+                  <input id="gtoDate" type="date" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Результат</span>
+                  <input id="gtoValue" type="number" step="0.1" required />
+                </label>
+                <label class="field">
+                  <span class="field-label">Ед. изм.</span>
+                  <input id="gtoUnit" type="text" value="с" required />
+                </label>
+                <div class="form-actions full-width">
+                  <button type="submit" class="primary-btn">Сохранить</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="small-note">
+              Для автоматической проверки по нормативам используйте официальные таблицы ГТО на сайте <a href="https://gto.ru" target="_blank" rel="noopener noreferrer">gto.ru</a>. В этой версии значения проверяются вручную после импорта актуальных данных.
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
